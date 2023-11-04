@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link  href="{% static 'viewerjs/viewer.css' %}" rel="stylesheet">
+
+<script src="{% static 'viewerjs/viewer.js' %}"></script>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="bg-warning mx-5 pb-3 rounded opacity-3">
+            <div class="row mx-5 mt-3">
+                <h2 class="pt-5 pb-3">Your photos </h2>
+                <hr>
+                <h5 class="pt-2 pb-1">Catalog </h5>
+                <div class="col-md-5">
+                    <select class="form-control col-md-5 " name="Catalogs" id="catalogs">
+                            <option value= "All"> All </option>
+                            {% for catalog in catalogs %}
+                                <option value={{ catalog }} {%if catalog  == selected %}selected {% endif %}> {{ catalog }}</option>
+                            {% endfor %}
+                    </select>
+                    <input type="submit"  name = "Select"  value = "Select" class="btn btn-primary my-2 ">
+                    <input type="submit"  name = "DeleteCatalog"  value = "Delete" class="btn btn-primary my-2 " onclick="return confirm('Are you sure?');" >
+                </div>
+                <hr>
+                    <section id="index-gallery" class="row">
+                         {% for image, MDlist in images %}
+                             {% if MDlist.view %}
+                                <div class="col-lg-4 col-md-10 mb-4 mb-lg-0">
+                                    <img id="image" src="{{ image.image.url }}" class="shadow-lg rounded mb-4" height="200">
+                                </div>
+                             {% endif %}
+                         {% endfor %}
+                    </section>
+            </div>
+        </div>
+                        <div class="bg-warning my-5 mx-5 py-4 px-4 rounded">
+
+
+                                            <table class="table table-hover">
+
+                                                <tr class="table-dark">
+                                                    <td></td>
+                                                    {% with 'Name DateTimeOriginal Model ExposureTime FNumber ISOSpeedRatings LensModel' as list %}
+                                                        {% for name in list.split %}
+                                                            <td>
+                                                                <input type="submit" class="btn-check" name="Metadata-sort" id="{{ name }}" value="{{ name }}" autocomplete="off"  >
+                                                                <label   class="btn btn-outline-success" for="{{ name }}"> {{ name }} </label>
+                                                            </td>
+                                                        {% endfor %}
+                                                    {% endwith %}
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                {% for image, MDlist in images %}
+                                                    <tr class="table-dark">
+
+                                                        <td><input type="checkbox" name="show_checkbox"  id="{{ image.name }}" value="{{ image.name }}"
+                                                               {% if MDlist.view %}checked> {% endif %} </td>
+                                                        <td>{{  image.name }}</td>
+                                                        <td>{{ MDlist.date_time_original }}</td>
+                                                        <td>{{ MDlist.model }}</td>
+                                                        <td>{{ MDlist.exposure_time }}</td>
+                                                        <td>{{ MDlist.f_number }}</td>
+                                                        <td>{{ MDlist.iso_speed_ratings }}</td>
+                                                        <td>{{ MDlist.lens_model }}</td>
+                                                        <td> <a href="{% url 'img_metadata' image.id %}">
+                                                            <input type="button"  name="showMetaData"  value="Details" class="btn btn-outline-success"></a>
+                                                        </td>
+                                                        <td>
+                                                            <input type="submit"  name="{{ image.id }}"  value="Delete" class="btn btn-outline-success">
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                <tr class="table-dark" >
+                                                    <td> </td>
+                                                    <td> <input type="submit" name="show"  value="Show" class="btn btn-outline-danger"> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                </tr>
+                                            </table>
+                            </div>
+                        </div>
+    </form>
+
+<script>
+const gallery = new Viewer(document.getElementById('index-gallery'));
+</script>
+
+{% endblock %}
