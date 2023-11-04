@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+      <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <title>PicsShow</title>
+
+
+      </head>
+  <body>
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+        <nav class="navbar navbar-expand-md navbar-light bg-warning">
+
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <span class="ms-4" style="font-family:'Dancing Script', cursive; font-size: 1.5vw;">PicsShow</span>
+            </a>
+
+            {% if user.is_authenticated %}
+             <div class="d-flex justify-content-start mx-2" id="actionBar">
+                <form action="{% url 'upload_img' %}">
+                    <button type="submit" class="btn btn-outline-success"> Upload image </button>
+                </form>
+             </div>
+                <div class="d-flex justify-content-start mx-2" id="actionBar">
+                    <form action="{% url 'logged_in' %}">
+                        <button type="submit" class="btn btn-outline-success"> Catalog </button>
+                    </form>
+                </div>
+
+            {% endif %}
+
+             <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+                <ul class="navbar-nav mx-5 ">
+                {% if user.is_authenticated %}
+                <li class="nav-item me-3">
+        <span class="badge rounded-pill bg-success p-2 mt-1">Logged In as {{ user.username }}</span>
+        </li>
+         <li class="nav-item  mx-auto">
+
+        <form method="POST" action="{% url 'logout_user' %}" class="d-flex">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-outline-success"> Log out </button>
+        </form>
+        </li>
+        {% else %}
+            <li class="nav-item">
+                <a href="{% url 'sign_up_user' %}" class="nav-link active" aria-current="page">Sign up </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'sign_in_user' %}" class="nav-link active" aria-current="page">Sign in </a>
+            </li>
+        {% endif %}
+        </ul>
+        </div>
+
+        </nav>
+
+        {% block content %}
+
+        {% endblock %}
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+
+        <br>
+            <footer class="fixed-bottom bg-warning text-lg-start ">
+                <div class="text-center p-1">
+                    <p class="font-weight-bold mt-2" style="font-weight: bold; font-size: 0.7vw;">
+                        © 2021 Copyright:
+                        Michal Taszycki & Kornel Witkowski
+                     </p>
+                </div>
+            </footer>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+
+
+#title_container {
+    background-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px #b7a724;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+ 
+    position:absolute;
+}
+#title_container .title{
+    font-family:'Dancing Script', cursive;
+    font-size: 10vw;
+    color: #ffffff;
+    
+}
+#title_container .txt{
+    font-family: 'Antonio', sans-serif;
+    font-size: 2vw;
+    color: #ffffff;
+    margin-top: -50px;
+    
+}
+body{
+    background: url('image/background.jpg') no-repeat;
+    background-size: 115%;
+    height: 100%;
+    z-index: -1;
+}
+
+footer{
+    margin-top: 30px;
+    position: relative;
+    font-weight: bold;
+    font-size: 0.7vw;
+}
+
+
