@@ -1,1 +1,1 @@
-# djnago-img-viewer
+# django-img-viewer
